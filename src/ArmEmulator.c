@@ -652,7 +652,7 @@ void doDataTransfer(WORD inst){
 	//Check if the instruction is trying to access the restricted memory blocks
 	if ((memoryIndex >= userMemoryIndex) && (memoryIndex <= maxMemorySize)){
 		//If load/store bit is set load, if not store
-		if(lsBit) regDest = (wBit) ? memory[memoryIndex] : memory[memoryIndex] & MASK_4BIT;//If the word/byte bit is set, load the least significant byte from the noted memory address
+		if(lsBit) registers[regDest] = (wBit) ? memory[memoryIndex] : memory[memoryIndex] & MASK_4BIT;//If the word/byte bit is set, load the least significant byte from the noted memory address
 		else memory[memoryIndex] = (wBit) ? registers[regDest] : registers[regDest] & MASK_4BIT;//If the word/byte bit is set, store the least significant byte from regDest
 
 		//If the pre bit is not set, add/subtract offset to the base register after the transfer
