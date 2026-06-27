@@ -1,0 +1,24 @@
+name: Assign new PRs to Omid
+
+# Auto-assigns every newly opened PR (any author, including fork PRs) to @omufeed
+# so Omid gets one "Assigned to me" view + a notification across all repos.
+# Uses pull_request_target so the base-repo token has write access and the run
+# is driven by THIS file on the default branch (a fork PR cannot alter it). No
+# checkout of PR code, so there is no untrusted-code execution risk.
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign omufeed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr edit "$PR_URL" --add-assignee omufeed
